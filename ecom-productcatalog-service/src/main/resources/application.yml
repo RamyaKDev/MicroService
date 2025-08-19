@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+#datasource specific properties
+spring:
+  datasource:
+    username: root
+    password: abcd
+    url: jdbc:mysql://localhost:3306/ecommdb
+#jpa properties
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+# eureka server properties
+eureka: 
+  client:
+    service-url: 
+      default-zone: http://eureka-server
