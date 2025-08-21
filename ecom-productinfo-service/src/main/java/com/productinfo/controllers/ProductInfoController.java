@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.productinfo.exceptions.ProductNotFoundException;
 import com.productinfo.model.Product;
 import com.productinfo.service.IProductInfoService;
 
@@ -22,7 +21,7 @@ public class ProductInfoController {
 
 	//http://localhost:8082/productinfo-api/v1/product-info/productid/1
 	@GetMapping("/product-info/productid/{productId}")
-	ResponseEntity<Product> getById(@PathVariable int productId) throws ProductNotFoundException  {
+	ResponseEntity<Product> getById(@PathVariable int productId) {
 		Product product = productInfoService.getById(productId);
 		return ResponseEntity.ok(product);
 	}
@@ -36,17 +35,16 @@ public class ProductInfoController {
 	
 	//http://localhost:8082/productinfo-api/v1/product-info/brand/Samsung
 	@GetMapping("/product-info/brand/{brand}")
-	ResponseEntity<List<Product>> getByBrand(@PathVariable String brand) throws ProductNotFoundException  {
+	ResponseEntity<List<Product>> getByBrand(@PathVariable String brand){
 		List<Product> products = productInfoService.getByBrand(brand);
 		return ResponseEntity.ok(products);
 	}
 	
 	//http://localhost:8082/productinfo-api/v1/product-info/category/electronics
 	@GetMapping("/product-info/category/{category}")
-	ResponseEntity<List<Product>> getByCategory(@PathVariable String category) throws ProductNotFoundException  {
+	ResponseEntity<List<Product>> getByCategory(@PathVariable String category){
 		List<Product> products = productInfoService.getByCategory(category);
 		return ResponseEntity.ok(products);
 	}
 	
 }
-
