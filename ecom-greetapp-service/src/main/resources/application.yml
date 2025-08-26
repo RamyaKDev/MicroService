@@ -1,7 +1,9 @@
 spring:
   application:
-   name: ecom-greetapp-service
-
+    name: ecom-greetapp-service
+  profiles:
+    active: dev
+    default: prod
 
 
 eureka:
