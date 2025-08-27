@@ -21,6 +21,7 @@ public interface IProductService {
 
 	//native query 
 	void updateProductPrice(int productId,double price);
+	void updateProductStock(int productId, int stock);
 }
 
 

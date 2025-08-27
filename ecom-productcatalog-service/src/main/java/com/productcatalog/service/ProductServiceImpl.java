@@ -5,10 +5,13 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.productcatalog.exceptions.ProductNotFoundException;
+import com.productcatalog.model.InventoryDto;
 import com.productcatalog.model.Product;
 import com.productcatalog.model.ProductDto;
 import com.productcatalog.repository.IProductRepository;
@@ -20,12 +23,30 @@ public class ProductServiceImpl implements IProductService {
 	private IProductRepository productRepository;
 	@Autowired
 	private ModelMapper mapper;
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	private final String BASEURI=
+			"http://product-inventory/inventory-service/v1/inventories";
 	
 	@Override
 	public void addProduct(ProductDto productDto) {
 		// convert dto(productDto) in entity(product)
 		Product product = mapper.map(productDto, Product.class);
-		productRepository.save(product);
+		Product savedProduct=productRepository.save(product);
+		//get the stock from the productDto
+		int stock=productDto.getStock();
+		//get the productId after saving the product
+		int productId=savedProduct.getProductId();
+		//create the inventoryDto object
+		InventoryDto inventoryDto=new InventoryDto();
+		inventoryDto.setProductId(productId);
+		inventoryDto.setStock(stock);
+		//frame the uri to call the inventory microservice
+		//using resttemplate call the appropriate method
+		ResponseEntity<String> response=
+				restTemplate.postForEntity(BASEURI, inventoryDto, String.class);
+		System.out.println(response.getBody());
 	}
 
 	@Override
@@ -107,5 +128,19 @@ public class ProductServiceImpl implements IProductService {
 	public void updateProductPrice(int productId, double price) {
 		productRepository.updateProduct(productId, price);
 	}
+
+	@Override
+	@Transactional
+	public void updateProductStock(int productId, int stock) {
+		//call inventoryRest API to update stock
+		//create the inventorydto object
+		InventoryDto inventoryDto=new InventoryDto();
+		inventoryDto.setProductId(productId);
+		inventoryDto.setStock(stock);
+		restTemplate.put(BASEURI, inventoryDto);
+		
+	}
+	
+	
 
 }

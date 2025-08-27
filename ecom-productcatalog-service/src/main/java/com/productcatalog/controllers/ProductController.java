@@ -3,6 +3,7 @@ package com.productcatalog.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.productcatalog.model.ProductDto;
 import com.productcatalog.model.ProductPriceDto;
+import com.productcatalog.model.ProductStockDto;
 import com.productcatalog.service.IProductService;
 
 @RestController
@@ -27,7 +29,16 @@ public class ProductController {
 	
 		@Autowired
 	    private IProductService productService;
-	
+		
+		//to get the value from application.yml to this field
+		@Value("${message}")
+		private String message;
+		
+//		http://localhost:8081/product-api/v1/show-message
+		@GetMapping("/show-message")
+		String showMessage(){
+			return message.toUpperCase();
+		}
 //		http://localhost:8081/product-api/v1/products
 	    @PostMapping("/products")
 		ResponseEntity<Void> addProduct(@RequestBody ProductDto productDto) {
@@ -51,6 +62,15 @@ public class ProductController {
 	    	double price = productPriceDto.getPrice();
 	    	int productId = productPriceDto.getProductId();
 			productService.updateProductPrice(productId, price);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		}
+	    
+//		http://localhost:8081/product-api/v1/products/stock
+	    @PatchMapping("/products/stock")
+		ResponseEntity<Void> updateStock(@RequestBody ProductStockDto productStockDto){
+	    	int stock= productStockDto.getStock();
+	    	int productId = productStockDto.getProductId();
+			productService.updateProductStock(productId, stock);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		}
 	    
