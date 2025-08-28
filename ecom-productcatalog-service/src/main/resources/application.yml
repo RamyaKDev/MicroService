@@ -7,8 +7,8 @@ message: In catalog service
 spring:
  application:
   name: product-catalog
- profiles:
-  active: dev,prod
+# profiles:
+#  active: dev,prod
 # provide cloud config uri
 
  config:

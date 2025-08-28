@@ -28,6 +28,7 @@ public class ProductServiceImpl implements IProductService {
 	
 	private final String BASEURI=
 			"http://product-inventory/inventory-service/v1/inventories";
+
 	
 	@Override
 	public void addProduct(ProductDto productDto) {
@@ -134,10 +135,13 @@ public class ProductServiceImpl implements IProductService {
 	public void updateProductStock(int productId, int stock) {
 		//call inventoryRest API to update stock
 		//create the inventorydto object
+		System.out.println("Update stock in catalog ");
 		InventoryDto inventoryDto=new InventoryDto();
 		inventoryDto.setProductId(productId);
 		inventoryDto.setStock(stock);
+		System.out.println(inventoryDto);
 		restTemplate.put(BASEURI, inventoryDto);
+		
 		
 	}
 	
