@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class InventoryRequest {
+	
 	private Integer inventoryId;
 	private int productId;
 	private int stock;

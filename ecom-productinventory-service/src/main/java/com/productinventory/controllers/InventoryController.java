@@ -21,30 +21,29 @@ public class InventoryController {
 	@Autowired
 	private IInventoryService inventoryService;
 
-////	http://localhost:8085/inventory-service/v1/inventories?productId=102&stock=100
-//	@GetMapping("/inventories")
-//	ResponseEntity<Void> addStock(@RequestParam int productId,@RequestParam int stock){
-//		InventoryRequest request = new InventoryRequest();
-//		request.setProductId(productId);
-//		request.setStock(stock);
-//		inventoryService.addStock(request);
-//		return ResponseEntity.status(HttpStatus.CREATED).build();
-//	}
-//	http://localhost:8085/inventory-service/v1/inventories
+
+//	http://localhost:8087/inventory-service/v1/inventories
 	@PostMapping("/inventories")
-	ResponseEntity<Void> addStock(@RequestBody InventoryRequest inventoryRequest){
+	ResponseEntity<String> addStock(@RequestBody InventoryRequest inventoryRequest){
 		
-		inventoryService.addStock(inventoryRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		String result=inventoryService.addStock(inventoryRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
-//	http://localhost:8085/inventory-service/v1/inventories/productId/102
+//	http://localhost:8087/inventory-service/v1/inventories/productId/1
 	@GetMapping("/inventories/productId/{productId}")
 	ResponseEntity<Integer> checkStock(@PathVariable int productId) {
-		return null;
+		int stock=inventoryService.checkStock(productId);
+		return ResponseEntity.ok(stock);
 	}
+	
+//	http://localhost:8087/inventory-service/v1/inventories
 	@PutMapping("/inventories")
-	String updateStock(InventoryRequest inventoryRequest) {
-		return null;
+	ResponseEntity<String> updateStock(@RequestBody InventoryRequest inventoryRequest) {
+		System.out.println("Update stock in inventory ");
+		System.out.println(inventoryRequest);
+		String result=inventoryService.updateStock(inventoryRequest);
+	
+		return ResponseEntity.ok(result);
 	}
 	
 }
