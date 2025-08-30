@@ -16,11 +16,11 @@ public class ProductInfoServiceImpl implements IProductInfoService{
 	@Autowired
 	private RestTemplate template;
 	// pass the application name instead of localhost
-	private final String BASEURL = "http://product-catalog/product-api/v1/products";
+	private final String BASEURL = "http://product-catalog/catalog-service/v1/products";
 	
 	@Override
 	public Product getById(int productId)  {
-//		 http://localhost:8081/product-api/v1/products/productId/1
+//		 http://localhost:8081/catalog-service/v1/products/productId/1
 		String url = BASEURL.concat("/productId/")+productId;
 		ResponseEntity <Product> productEntity =  template.getForEntity(url, Product.class);
 		return productEntity.getBody();
@@ -28,7 +28,7 @@ public class ProductInfoServiceImpl implements IProductInfoService{
 
 	@Override
 	public List<Product> getAll() {
-//		http://localhost:8081/product-api/v1/products
+//		http://localhost:8081/catalog-service/v1/products
 		ResponseEntity<List> productEntity =  template.getForEntity(BASEURL,List.class);
 		List<Product> products = productEntity.getBody();
 		System.out.println("........"+productEntity.getStatusCode()+".......");
@@ -37,7 +37,7 @@ public class ProductInfoServiceImpl implements IProductInfoService{
 
 	@Override
 	public List<Product> getByBrand(String mbrand)  {
-//		 http://localhost:8081/product-api/v1/products/brand/Samsung
+//		 http://localhost:8081/catalog-service/v1/products/brand/Samsung
 		String url = BASEURL.concat("/brand/").concat(mbrand);
 		ResponseEntity<List> productEntity =  template.getForEntity(url,List.class);
 		List<Product> products = productEntity.getBody();
@@ -47,7 +47,7 @@ public class ProductInfoServiceImpl implements IProductInfoService{
 
 	@Override
 	public List<Product> getByCategory(String mcategory)  {
-//		http://localhost:8081/product-api/v1/products/category?category=electronics
+//		http://localhost:8081/catalog-service/v1/products/category?category=electronics
 		String url = BASEURL.concat("/category?category=").concat(mcategory);
 		ResponseEntity<List> productEntity =  template.getForEntity(url,List.class);
 		List<Product> products = productEntity.getBody();
